@@ -19,14 +19,18 @@ const keyCodes = {
 
 export default class Keyboard extends BaseModule {
   static injectInit (quill) {
-    // left/right
-    const bindings = quill.keyboard.bindings
-    bindings[this.keys.LEFT].unshift(
-      this.makeArrowHandler(this.keys.LEFT, false)
-    )
-    bindings[this.keys.RIGHT].unshift(
-      this.makeArrowHandler(this.keys.RIGHT, false)
-    )
+    const bindings = quill.keyboard?.bindings;
+
+    const leftKey = this.keys.LEFT;
+    const rightKey = this.keys.RIGHT;
+
+    if (Array.isArray(bindings?.[leftKey])) {
+      bindings[leftKey].unshift(this.makeArrowHandler(leftKey, false));
+    }
+
+    if (Array.isArray(bindings?.[rightKey])) {
+      bindings[rightKey].unshift(this.makeArrowHandler(rightKey, false));
+    }
   }
 
   static makeArrowHandler (key, shiftKey) {
